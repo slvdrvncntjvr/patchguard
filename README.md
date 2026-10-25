@@ -2,7 +2,7 @@
 
 A Next.js application with repository-scoped npm monitoring and remediation through GitHub Actions, n8n and optional Telegram alerts. No AI models, paid APIs, n8n AI credits, automatic merging or deployment.
 
-**Status:** the Next.js app is implemented locally with a committed-format npm lockfile, application tests, production build and HTTP smoke checks. The app uses Next.js 16.4.3, React/React DOM 19.3.1 and Node.js 24. A clean `npm ci --ignore-scripts`, 66 tests, production build, HTTP smoke check and full npm audit passed; the audit reported zero known vulnerabilities. These files remain local and unpushed. Live n8n monitoring, Telegram delivery, Actions dispatch and end-to-end remediation have not been verified.
+**Status:** the Next.js app and guarded Actions workflow have been published to `slvdrvncntjvr/patchguard`; Dependabot alerts are enabled. The app uses Next.js 16.4.3, React/React DOM 19.3.1 and Node.js 24. A clean `npm ci --ignore-scripts`, 66 tests, production build, HTTP smoke check and full npm audit passed; the audit reported zero known vulnerabilities. The n8n monitor was published with explicit approval on 25 October 2026 after a successful manual monitor execution. Its six-hour schedule is active, Telegram is configured, and automatic patch dispatch remains blocked. The remediation-to-PR path remains unverified.
 
 ## Run the Next.js app
 
@@ -15,26 +15,27 @@ npm run dev
 
 Open http://127.0.0.1:3000. On Windows PowerShell, use `npm.cmd` instead of `npm` if execution policy blocks npm.ps1. For a production-mode local preview, run `npm run build` followed by `npm start`.
 
-The homepage shows repository setup, pipeline stages and the remaining setup checklist. It reads only approved public fields from `n8n/saved-workflow.json` at build time; it does not expose credential IDs, tokens or Telegram chat IDs. This is a saved-configuration overview, not a live CVE dashboard. Vulnerability count remains unknown until a real scan is verified. Rebuild after refreshing the saved snapshot to reflect configuration changes.
+The homepage shows repository setup, pipeline stages and the remaining setup checklist. It reads only approved public fields from `n8n/saved-workflow.json` at build time; it does not expose credential IDs, tokens or Telegram chat IDs. The public snapshot records Telegram readiness as booleans; its chat ID remains a placeholder, while the real chat ID is configured only in n8n. This is a saved-configuration overview, not a live CVE dashboard. The website does not display live scan counts. Rebuild after refreshing the saved snapshot to reflect configuration changes.
 
 `GET /api/health` checks application availability and explicitly reports that monitoring is unverified. Baseline response headers disable framing and content sniffing. The app does not dispatch, merge or deploy anything and needs no environment secrets to start.
 
-## What remains before live monitoring
+## What remains before automatic patching
 
-1. Create the Telegram bot, save its token in an n8n Telegram credential, and configure the numeric chat ID. Do not paste the token into the repository or app.
-2. Publish the reviewed app and Actions files to GitHub, verify Actions repository settings and enable the repository dependency graph/Dependabot alerts. No files have been pushed by this task.
-3. Complete the disposable-repository tests, verify n8n API handling and Telegram delivery, and establish serialized execution before approving dispatch. Local tests do not approve live Actions execution.
-4. Explicitly approve activation when ready. Keep the n8n workflow unpublished and dispatch gates false until then. Vercel deployment is optional and requires a separate deployment decision; it is not needed for n8n to inspect GitHub dependencies.
+1. Rotate the bot token shared in chat before production use, and update the encrypted Telegram credential in n8n. Do not store tokens in the repository or app.
+2. Complete the disposable-repository patch-to-PR tests and verify repository permissions/settings for draft PR creation. The GitHub Actions approval variable remains unset.
+3. Establish serialized n8n execution and review the deduplication crash/concurrency limitation before approving dispatch. Monitoring activation does not approve unverified automatic patching.
+4. Vercel deployment is optional and requires a separate deployment decision; it is not needed for n8n to inspect GitHub dependencies.
 
-## Saved n8n draft
+## Saved n8n workflow
 
 - Name: **PATCHGUARD — Autonomous CVE Monitoring & Remediation**
 - Workflow ID: `vsZKzBRf7cYRZeub`
 - Project: personal project `blRJOXvScj61n0cp`
 - Editor: https://workcybercentcurity.app.n8n.cloud/workflow/vsZKzBRf7cYRZeub
-- Inactive and unpublished. Manual Trigger previews only; Schedule Trigger is configured for every six hours.
+- Published and active. Manual Trigger previews only; Schedule Trigger runs every six hours with dispatch disabled.
 - 21 nodes organized into five named canvas sections. A source copy is in `n8n/patchguard-v1.sdk.js`; n8n execution settings are in the saved workflow snapshot.
 - SDK validation passed before creation. The saved graph and disabled approval flags were retrieved for comparison after edits.
+- Live monitor verification: execution `1` completed successfully with a complete repository scan, confirmed Telegram delivery, and no execution of the GitHub dispatch node. The published version is `1550eded-159a-4b41-960f-edf4f8ec75f6`.
 
 The pipeline reads open npm Dependabot alerts from the configured repository, the official CISA KEV feed, root manifests and PATCHGUARD Actions history. It reports missing, forbidden, stale, malformed and truncated data as incomplete. Only confirmed direct root npm dependencies with a stable, newer, same-major fix and a canonical GHSA ID can become patch candidates. KEV findings rank first, then critical/high findings. Other cases require manual review.
 
@@ -47,11 +48,11 @@ The saved `GitHub account` credential is attached to all five GitHub HTTP nodes.
 | Credential label | n8n type | Minimum access |
 | --- | --- | --- |
 | GitHub account | GitHub API | Attached to the four GET nodes and the gated dispatch node. Reads require Dependabot alerts, Contents and Actions read; eventual dispatch requires Actions write. |
-| PATCHGUARD Telegram Bot | Telegram API | BotFather token; bot must be allowed to send to the configured chat |
+| Telegram account | Telegram API | Configured and connection-tested in n8n; real token and chat ID are excluded from the public snapshot |
 
 The current setup reuses the GitHub credential you saved; assigning it did not approve or enable dispatch. Configure Telegram's credential and numeric chat ID before setting `telegramEnabled=true`. Tokens belong exclusively in encrypted n8n credentials, never Code nodes, environment examples, exported workflow parameters or Git.
 
-Configuration defaults: `dryRun=true`, and `dispatchEnabled`, `authSetupApproved`, `testsApproved`, `serializedExecutionApproved`, `telegramEnabled` are all false. Manual source remains preview-only even if approval flags change. Scheduling must remain unpublished until explicitly approved.
+Current configuration: `dryRun=true`; `dispatchEnabled`, `authSetupApproved`, `testsApproved`, `serializedExecutionApproved` remain false; `telegramEnabled=true`. Manual source remains preview-only even if approval flags change. The schedule was published after explicit approval.
 
 ### n8n limits before live use
 
@@ -85,7 +86,7 @@ The publisher alone has `contents: write` and `pull-requests: write`; the build 
 
 The YAML review follows GitHub's [secure use guidance](https://docs.github.com/en/actions/reference/security/secure-use), including SHA pinning, limited token permissions and avoiding input interpolation in shell scripts. Dependency lifecycle-script restrictions follow [npm's ignore-scripts behavior](https://docs.npmjs.com/cli/v11/using-npm/config#ignore-scripts).
 
-See [docs/safe-test-plan.md](docs/safe-test-plan.md) before any live run. No workflow has been activated, no Actions dispatch has been sent, no commit has been pushed, and no PR has been created by this implementation task.
+See [docs/safe-test-plan.md](docs/safe-test-plan.md) before testing automatic remediation. The repository is published and monitoring is active; no Actions dispatch, PR, merge or deployment has been performed.
 
 ## Local verification
 
@@ -100,4 +101,4 @@ node --check .github/scripts/patchguard.mjs
 actionlint -shellcheck= -pyflakes= .github/workflows/patchguard.yml
 ```
 
-The 66 tests exercise the app's privacy and configuration behavior, the real app lockfile, policy, n8n Code snippets and the publisher with synthetic data and mocked HTTP responses; they make no real API writes. The separate smoke test starts an owned production server on a temporary loopback port, checks the homepage, health JSON, security/cache headers, credential privacy and 404 handling, then stops it. `npm run check` runs the tests, build, production smoke check and full audit in order. Browser visual QA was not performed. `actionlint` checked the Actions workflow and expressions; ShellCheck/Pyflakes were unavailable and disabled. A real GitHub Actions run, PR creation, n8n execution and Telegram delivery remain untested and unapproved.
+The 66 tests exercise the app's privacy and configuration behavior, the real app lockfile, policy, n8n Code snippets and the publisher with synthetic data and mocked HTTP responses; they make no real API writes. The separate smoke test starts an owned production server on a temporary loopback port, checks the homepage, health JSON, security/cache headers, credential privacy and 404 handling, then stops it. `npm run check` runs the tests, build, production smoke check and full audit in order. Browser visual QA was not performed. `actionlint` checked the Actions workflow and expressions; ShellCheck/Pyflakes were unavailable and disabled. A live n8n monitor execution completed successfully before publication. A real GitHub Actions patch run, PR creation and deployment remain untested.

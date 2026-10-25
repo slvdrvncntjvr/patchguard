@@ -1,10 +1,10 @@
 {
   "id": "vsZKzBRf7cYRZeub",
   "name": "PATCHGUARD — Autonomous CVE Monitoring & Remediation",
-  "active": false,
+  "active": true,
   "isArchived": false,
-  "versionId": "75255f3d-df83-4f0a-9c8e-7c25ccc0f95a",
-  "activeVersionId": null,
+  "versionId": "1550eded-159a-4b41-960f-edf4f8ec75f6",
+  "activeVersionId": "1550eded-159a-4b41-960f-edf4f8ec75f6",
   "triggerCount": 0,
   "nodeCount": 21,
   "createdAt": "2026-10-25T05:50:15.300Z",
@@ -358,7 +358,7 @@
             {
               "id": "pg-telegramEnabled",
               "name": "telegramEnabled",
-              "value": false,
+              "value": true,
               "type": "boolean"
             },
             {
@@ -974,7 +974,13 @@
         }
       },
       "onError": "continueRegularOutput",
-      "webhookId": "280a6924-27ad-4d9c-a330-f29cacc7126a"
+      "webhookId": "280a6924-27ad-4d9c-a330-f29cacc7126a",
+      "credentials": {
+        "telegramApi": {
+          "id": "xwvBWYuDCe9ltTQx",
+          "name": "Telegram account"
+        }
+      }
     },
     {
       "id": "d8fdcbba-3244-4d76-bb56-6b0f5d79c680",
@@ -1065,9 +1071,18 @@
       "description": "Show manual review, previews, attempts and API failures; optionally send escaped Telegram alerts."
     }
   ],
-  "activeVersion": null,
+  "activeVersion": {
+    "sameAsDraft": true
+  },
   "meta": {
     "aiBuilderAssisted": true,
     "builderVariant": "mcp"
+  },
+  "publicSetup": {
+    "telegramConfigured": true,
+    "telegramEnabled": true,
+    "monitorExecutionId": "1",
+    "monitorExecutionStatus": "success",
+    "automaticDispatchEnabled": false
   }
 }

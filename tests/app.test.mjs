@@ -10,7 +10,7 @@ test('app exposes configured repository without claiming a verified live scan', 
   const overview = buildProjectOverview(snapshot);
   assert.equal(overview.repository, 'slvdrvncntjvr/patchguard');
   assert.equal(overview.githubConfigured, true);
-  assert.equal(overview.monitoringEnabled, false);
+  assert.equal(overview.monitoringEnabled, snapshot.active === true);
   assert.equal(overview.dispatchApproved, false);
   assert.equal(overview.scanStatus, 'not-verified');
   assert.equal(overview.vulnerabilityCount, null);
@@ -41,10 +41,12 @@ test('missing GitHub credentials are visible as incomplete setup', () => {
 
 test('Telegram needs both a saved credential and valid chat ID', () => {
   const copy = structuredClone(snapshot);
+  delete copy.publicSetup;
   copy.nodes.find(n => n.type === 'n8n-nodes-base.telegram').credentials = { telegramApi: { id: 'synthetic-test-id' } };
   assert.equal(buildProjectOverview(copy).telegramConfigured, false);
   const settings = copy.nodes.find(n => n.name === 'Configuration — Repository and Safety Gates').parameters.assignments.assignments;
   settings.find(a => a.name === 'telegramChatId').value = '-100123456789';
+  settings.find(a => a.name === 'telegramEnabled').value = false;
   assert.equal(buildProjectOverview(copy).telegramConfigured, true);
   assert.equal(buildProjectOverview(copy).telegramEnabled, false);
 });
