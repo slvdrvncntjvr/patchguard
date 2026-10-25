@@ -1,0 +1,1073 @@
+{
+  "id": "vsZKzBRf7cYRZeub",
+  "name": "PATCHGUARD — Autonomous CVE Monitoring & Remediation",
+  "active": false,
+  "isArchived": false,
+  "versionId": "75255f3d-df83-4f0a-9c8e-7c25ccc0f95a",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "nodeCount": 21,
+  "createdAt": "2026-10-25T05:50:15.300Z",
+  "updatedAt": "2026-10-25T06:32:29.844Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "timezone": "Asia/Manila",
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 180
+  },
+  "tags": [],
+  "parentFolderId": null,
+  "description": "Repository-scoped npm CVE monitoring with Dependabot, CISA KEV prioritization, conservative patch eligibility, deduplication, approval-gated Actions dispatch, and optional Telegram alerts. No AI or deployment.",
+  "scopes": [
+    "execution:delete",
+    "execution:list",
+    "execution:read",
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true,
+  "connections": {
+    "Configuration — Repository and Safety Gates": {
+      "main": [
+        [
+          {
+            "node": "Validate Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Configuration": {
+      "main": [
+        [
+          {
+            "node": "Configuration Valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configuration Valid?": {
+      "main": [
+        [
+          {
+            "node": "GitHub — Open Repository Dependabot Alerts",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Telegram Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub — Open Repository Dependabot Alerts": {
+      "main": [
+        [
+          {
+            "node": "CISA — Known Exploited Vulnerabilities",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CISA — Known Exploited Vulnerabilities": {
+      "main": [
+        [
+          {
+            "node": "GitHub — Root package.json",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub — Root package.json": {
+      "main": [
+        [
+          {
+            "node": "GitHub — Root package-lock.json",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub — Root package-lock.json": {
+      "main": [
+        [
+          {
+            "node": "GitHub — Existing PATCHGUARD Runs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub — Existing PATCHGUARD Runs": {
+      "main": [
+        [
+          {
+            "node": "Verify API Responses — Never Assume Zero",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verify API Responses — Never Assume Zero": {
+      "main": [
+        [
+          {
+            "node": "Normalize npm — KEV Priority and Eligibility",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize npm — KEV Priority and Eligibility": {
+      "main": [
+        [
+          {
+            "node": "Select Unique Patches — Approval Required",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select Unique Patches — Approval Required": {
+      "main": [
+        [
+          {
+            "node": "Approved Unique Patch?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approved Unique Patch?": {
+      "main": [
+        [
+          {
+            "node": "GitHub — Dispatch patchguard.yml",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Telegram Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub — Dispatch patchguard.yml": {
+      "main": [
+        [
+          {
+            "node": "Record Dispatch Result — No Automatic Retry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Record Dispatch Result — No Automatic Retry": {
+      "main": [
+        [
+          {
+            "node": "Prepare Telegram Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Telegram Alert": {
+      "main": [
+        [
+          {
+            "node": "Telegram Notifications Enabled?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Notifications Enabled?": {
+      "main": [
+        [
+          {
+            "node": "Telegram — Patch and Review Alerts",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Review Output — Telegram Disabled",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram — Patch and Review Alerts": {
+      "main": [
+        [
+          {
+            "node": "Verify Telegram Delivery",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual — Competition Preview": {
+      "main": [
+        [
+          {
+            "node": "Configuration — Repository and Safety Gates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every 6 Hours": {
+      "main": [
+        [
+          {
+            "node": "Configuration — Repository and Safety Gates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "3fe52fea-1eca-4b64-93a9-5d39127736d7",
+      "name": "Manual — Competition Preview",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "9740cda8-4b6b-4a71-8bca-a30180830671",
+      "name": "Configuration — Repository and Safety Gates",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        500,
+        120
+      ],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "id": "pg-triggerSource",
+              "name": "triggerSource",
+              "type": "string",
+              "value": "={{ $(\"Every 6 Hours\").isExecuted && !$(\"Manual — Competition Preview\").isExecuted ? \"schedule\" : \"manual\" }}"
+            },
+            {
+              "id": "pg-owner",
+              "name": "owner",
+              "value": "slvdrvncntjvr",
+              "type": "string"
+            },
+            {
+              "id": "pg-repository",
+              "name": "repository",
+              "value": "patchguard",
+              "type": "string"
+            },
+            {
+              "id": "pg-ref",
+              "name": "ref",
+              "value": "main",
+              "type": "string"
+            },
+            {
+              "id": "pg-dryRun",
+              "name": "dryRun",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "pg-dispatchEnabled",
+              "name": "dispatchEnabled",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "pg-authSetupApproved",
+              "name": "authSetupApproved",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "pg-testsApproved",
+              "name": "testsApproved",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "pg-serializedExecutionApproved",
+              "name": "serializedExecutionApproved",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "pg-telegramEnabled",
+              "name": "telegramEnabled",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "pg-telegramChatId",
+              "name": "telegramChatId",
+              "value": "CONFIGURE_TELEGRAM_CHAT_ID",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": false
+      }
+    },
+    {
+      "id": "40007977-011d-4d51-94e4-2ae4c1911767",
+      "name": "Validate Configuration",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        760,
+        120
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const config = $input.first().json;\nconst errors = [];\nif (!/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$/.test(config.owner || '')) errors.push('Invalid GitHub owner');\nif (!/^[A-Za-z0-9_.-]{1,100}$/.test(config.repository || '') || ['.','..'].includes(config.repository)) errors.push('Invalid repository');\nif (!/^[A-Za-z0-9][A-Za-z0-9._/-]{0,150}$/.test(config.ref || '') || config.ref.includes('..') || config.ref.includes('//') || config.ref.endsWith('/')) errors.push('Invalid trusted branch ref');\nif (!['manual','schedule'].includes(config.triggerSource)) errors.push('Unknown trigger source');\nreturn [{json:{config, configReady:errors.length === 0, event: errors.length ? 'configuration_error' : 'configured', reasons:errors, scanStatus:errors.length ? 'incomplete' : 'pending', dispatchReady:false}}];"
+      }
+    },
+    {
+      "id": "d1b3463d-b073-4e86-9d2c-53183da75641",
+      "name": "Configuration Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        1020,
+        120
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "pg-configReady",
+              "leftValue": "={{ $json.configReady }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "4e59675c-cf59-4978-a691-c64990c56896",
+      "name": "GitHub — Open Repository Dependabot Alerts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1320,
+        120
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ \"https://api.github.com/repos/\" + $(\"Validate Configuration\").first().json.config.owner + \"/\" + $(\"Validate Configuration\").first().json.config.repository + \"/dependabot/alerts\" }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            },
+            {
+              "name": "X-GitHub-Api-Version",
+              "value": "2026-03-10"
+            }
+          ]
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "state",
+              "value": "open"
+            },
+            {
+              "name": "ecosystem",
+              "value": "npm"
+            },
+            {
+              "name": "per_page",
+              "value": "100"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "pagination": {
+            "pagination": {
+              "paginationMode": "responseContainsNextURL",
+              "nextURL": "={{ (($response.headers.link || $response.headers.Link || \"\").match(/<([^>]+)>;\\s*rel=\"next\"/) || [])[1] || \"\" }}",
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ $response.statusCode !== 200 || !(($response.headers.link || $response.headers.Link || \"\").match(/<([^>]+)>;\\s*rel=\"next\"/) || [])[1] || !(($response.headers.link || $response.headers.Link || \"\").match(/<([^>]+)>;\\s*rel=\"next\"/) || [])[1].startsWith((\"https://api.github.com/repos/\" + $(\"Validate Configuration\").first().json.config.owner + \"/\" + $(\"Validate Configuration\").first().json.config.repository + \"/\")) }}",
+              "limitPagesFetched": true,
+              "maxRequests": 10,
+              "requestInterval": 300
+            }
+          }
+        }
+      },
+      "executeOnce": true,
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "githubApi": {
+          "id": "8sZghTGcyURX3CMo",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "id": "705ef888-63e3-44be-8109-a44c226b0821",
+      "name": "CISA — Known Exploited Vulnerabilities",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1580,
+        120
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+        "authentication": "none",
+        "options": {
+          "timeout": 30000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "executeOnce": true,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "8f947c59-46f0-4120-8435-c56e3773fbf2",
+      "name": "GitHub — Root package.json",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1840,
+        120
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ \"https://api.github.com/repos/\" + $(\"Validate Configuration\").first().json.config.owner + \"/\" + $(\"Validate Configuration\").first().json.config.repository + \"/contents/package.json\" }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github.raw+json"
+            },
+            {
+              "name": "X-GitHub-Api-Version",
+              "value": "2026-03-10"
+            }
+          ]
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "ref",
+              "value": "={{ $(\"Validate Configuration\").first().json.config.ref }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "executeOnce": true,
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "githubApi": {
+          "id": "8sZghTGcyURX3CMo",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "id": "2813c44c-583f-4109-8c1d-e09d9ceaf6a2",
+      "name": "GitHub — Root package-lock.json",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2100,
+        120
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ \"https://api.github.com/repos/\" + $(\"Validate Configuration\").first().json.config.owner + \"/\" + $(\"Validate Configuration\").first().json.config.repository + \"/contents/package-lock.json\" }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github.raw+json"
+            },
+            {
+              "name": "X-GitHub-Api-Version",
+              "value": "2026-03-10"
+            }
+          ]
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "ref",
+              "value": "={{ $(\"Validate Configuration\").first().json.config.ref }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "executeOnce": true,
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "githubApi": {
+          "id": "8sZghTGcyURX3CMo",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "id": "406f829f-4f90-4b7a-931c-6341eb339b0f",
+      "name": "GitHub — Existing PATCHGUARD Runs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2360,
+        120
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ \"https://api.github.com/repos/\" + $(\"Validate Configuration\").first().json.config.owner + \"/\" + $(\"Validate Configuration\").first().json.config.repository + \"/actions/workflows/patchguard.yml/runs\" }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            },
+            {
+              "name": "X-GitHub-Api-Version",
+              "value": "2026-03-10"
+            }
+          ]
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "event",
+              "value": "workflow_dispatch"
+            },
+            {
+              "name": "per_page",
+              "value": "100"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "pagination": {
+            "pagination": {
+              "paginationMode": "responseContainsNextURL",
+              "nextURL": "={{ (($response.headers.link || $response.headers.Link || \"\").match(/<([^>]+)>;\\s*rel=\"next\"/) || [])[1] || \"\" }}",
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ $response.statusCode !== 200 || !(($response.headers.link || $response.headers.Link || \"\").match(/<([^>]+)>;\\s*rel=\"next\"/) || [])[1] || !(($response.headers.link || $response.headers.Link || \"\").match(/<([^>]+)>;\\s*rel=\"next\"/) || [])[1].startsWith((\"https://api.github.com/repos/\" + $(\"Validate Configuration\").first().json.config.owner + \"/\" + $(\"Validate Configuration\").first().json.config.repository + \"/\")) }}",
+              "limitPagesFetched": true,
+              "maxRequests": 10,
+              "requestInterval": 300
+            }
+          }
+        }
+      },
+      "executeOnce": true,
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "githubApi": {
+          "id": "8sZghTGcyURX3CMo",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "id": "76feb010-06f1-4dc1-a8bb-3c4fac91a887",
+      "name": "Verify API Responses — Never Assume Zero",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2620,
+        120
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const config = $('Validate Configuration').first().json.config;\nfunction responses(name) { try { return $(name).all().map(i => i.json); } catch { return [{error:'No response'}]; } }\nfunction decode(value) { if (typeof value === 'string') { try { return JSON.parse(value); } catch { return null; } } return value; }\nfunction hasNext(r) { return /rel=\"?next\"?/.test(String(r.headers?.link || r.headers?.Link || '')); }\nconst scanErrors = [], dispatchSafetyErrors = [];\nconst pages = responses('GitHub — Open Repository Dependabot Alerts');\nlet alerts = [];\nfor (const page of pages) {\n  const body = decode(page.body);\n  if (page.error || page.statusCode !== 200 || !Array.isArray(body)) { scanErrors.push('Dependabot API failed or returned an invalid page; vulnerability count is UNKNOWN'); continue; }\n  if (body.some(a => !a || !Number.isInteger(a.number) || a.state !== 'open' || !a.dependency?.package || !a.security_advisory || !a.security_vulnerability)) { scanErrors.push('Malformed or unexpected Dependabot alert'); continue; }\n  alerts.push(...body);\n}\nif (!pages.length || hasNext(pages[pages.length-1] || {})) scanErrors.push('Dependabot pagination incomplete; count is UNKNOWN');\nalerts = [...new Map(alerts.map(a => [a.number,a])).values()];\nfunction singleton(name, label) {\n  const all = responses(name), response = all[0] || {};\n  const body = decode(response.body);\n  if (all.length !== 1 || response.error || response.statusCode !== 200 || !body || typeof body !== 'object' || Array.isArray(body)) {\n    scanErrors.push(label + ' API failed or returned invalid JSON'); return null;\n  }\n  return body;\n}\nconst kev = singleton('CISA — Known Exploited Vulnerabilities', 'CISA KEV');\nif (kev) {\n  const released = Date.parse(kev.dateReleased);\n  if (!Array.isArray(kev.vulnerabilities) || kev.vulnerabilities.length === 0 || kev.count !== kev.vulnerabilities.length || kev.vulnerabilities.some(v => !/^CVE-\\d{4}-\\d{4,}$/.test(v?.cveID || '')) || !Number.isFinite(released) || released < Date.now()-14*86400000 || released > Date.now()+86400000) scanErrors.push('CISA KEV feed is malformed, incomplete, or older than 14 days');\n}\nconst manifest = singleton('GitHub — Root package.json', 'package.json');\nconst lock = singleton('GitHub — Root package-lock.json', 'package-lock.json');\nif (manifest && (!manifest.dependencies?.next && !manifest.devDependencies?.next)) scanErrors.push('Repository is not a root Next.js app');\nif (manifest?.workspaces) scanErrors.push('Workspaces require manual review in v1');\nif (manifest?.packageManager && !/^npm@/.test(manifest.packageManager)) scanErrors.push('Only npm projects are supported');\nif (lock && (![2,3].includes(lock.lockfileVersion) || !lock.packages?.[''])) scanErrors.push('A root npm lockfile v2/v3 is required');\nconst runsPages = responses('GitHub — Existing PATCHGUARD Runs');\nconst runs = [];\nfor (const page of runsPages) {\n  const body = decode(page.body);\n  if (page.error || page.statusCode !== 200 || !Array.isArray(body?.workflow_runs) || !Number.isInteger(body.total_count) || body.workflow_runs.some(r => typeof r?.display_title !== 'string' || typeof r?.html_url !== 'string')) { dispatchSafetyErrors.push('Actions run history unavailable; dispatch is blocked'); continue; }\n  runs.push(...body.workflow_runs);\n}\nif (!runsPages.length || hasNext(runsPages[runsPages.length-1] || {}) || (decode(runsPages[0]?.body)?.total_count ?? 0) > runs.length) dispatchSafetyErrors.push('Actions run history pagination incomplete; dispatch is blocked');\nreturn [{json:{config,scanErrors,dispatchSafetyErrors,scanStatus:scanErrors.length?'incomplete':'complete',alerts,kev:Array.isArray(kev?.vulnerabilities)?kev.vulnerabilities.filter(v=>v && typeof v.cveID==='string'):[],manifest:manifest || {},lock:lock || {},runs,githubAlertCount:scanErrors.some(e=>e.includes('Dependabot'))?null:alerts.length}}];"
+      }
+    },
+    {
+      "id": "0b4864d8-dfd3-46b6-ae14-0485cdfe0fde",
+      "name": "Normalize npm — KEV Priority and Eligibility",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2920,
+        120
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const data = $input.first().json;\nconst config = data.config;\nconst namePattern = /^(?:@[a-z0-9][a-z0-9._-]*\\/)?[a-z0-9][a-z0-9._-]*$/;\nconst versionPattern = /^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$/;\nconst ghsaPattern = /^GHSA-[23456789cfghjmpqrvwx]{4}-[23456789cfghjmpqrvwx]{4}-[23456789cfghjmpqrvwx]{4}$/;\nconst scores = {critical:40,high:30,medium:20,low:10};\nconst exploited = new Map(data.kev.map(v=>[v.cveID,v]));\nconst seen = new Set();\nconst findings = [];\nfunction compare(a,b) { const aa=a.split('.').map(Number), bb=b.split('.').map(Number); for(let i=0;i<3;i++) { if(aa[i]!==bb[i]) return aa[i]>bb[i]?1:-1; } return 0; }\nfor (const alert of data.alerts) {\n  const dependency = alert.dependency, vulnerability = alert.security_vulnerability, advisory = alert.security_advisory;\n  const packageName = dependency.package.name;\n  const fixed = vulnerability.first_patched_version?.identifier || '';\n  const advisoryId = advisory.ghsa_id || '';\n  const cve = advisory.cve_id || '';\n  const severity = vulnerability.severity || advisory.severity || 'unknown';\n  const kevMatch = exploited.get(cve);\n  const reasons = [];\n  const sections = ['dependencies','devDependencies'].filter(section => Object.hasOwn(data.manifest[section] || {},packageName));\n  const installed = data.lock.packages?.['node_modules/'+packageName]?.version || '';\n  if (dependency.package.ecosystem !== 'npm' || vulnerability.package?.ecosystem !== 'npm' || vulnerability.package?.name !== packageName) reasons.push('Unsupported or mismatched package ecosystem');\n  if (typeof packageName !== 'string' || packageName.length>214 || !namePattern.test(packageName)) reasons.push('Invalid npm package name');\n  if (!ghsaPattern.test(advisoryId)) reasons.push('A canonical GHSA advisory ID is required');\n  if (advisory.withdrawn_at) reasons.push('Advisory was withdrawn');\n  if (!versionPattern.test(fixed)) reasons.push('No stable exact fixed version');\n  if (!versionPattern.test(installed)) reasons.push('Cannot establish a stable installed direct version');\n  if (sections.length !== 1 || dependency.relationship !== 'direct') reasons.push('Not a confirmed direct dependency');\n  if (!['package.json','package-lock.json'].includes(dependency.manifest_path)) reasons.push('Nested manifest or workspace is outside v1 scope');\n  if (versionPattern.test(fixed) && versionPattern.test(installed)) {\n    if (fixed.split('.')[0] !== installed.split('.')[0]) reasons.push('Major version change needs manual review');\n    if (compare(fixed,installed)<=0) reasons.push('Fixed version is not newer than installed version; refresh Dependabot');\n  }\n  if (!(kevMatch || ['critical','high'].includes(severity))) reasons.push('Below automatic patch priority threshold');\n  reasons.push(...data.scanErrors,...data.dispatchSafetyErrors);\n  const key = JSON.stringify([config.owner.toLowerCase()+'/'+config.repository.toLowerCase(),packageName,fixed]);\n  const finding = {alertNumber:alert.number,package:packageName,fixed_version:fixed,advisory_id:advisoryId,cve_id:cve,severity,installed_version:installed,manifest_path:dependency.manifest_path,knownExploited:data.scanStatus==='complete'?Boolean(kevMatch):null,priority:(kevMatch?100:0)+(scores[severity]||0),patchEligible:reasons.length===0,reasons,dedupeKey:key,runName:'PATCHGUARD '+packageName+'@'+fixed+' '+advisoryId,url:'https://github.com/'+config.owner+'/'+config.repository+'/security/dependabot/'+alert.number};\n  if (!seen.has(key+'|'+advisoryId)) { findings.push(finding); seen.add(key+'|'+advisoryId); }\n}\nfindings.sort((a,b)=>b.priority-a.priority || a.alertNumber-b.alertNumber);\nreturn [{json:{config,scanStatus:data.scanStatus,scanErrors:data.scanErrors,dispatchSafetyErrors:data.dispatchSafetyErrors,githubAlertCount:data.githubAlertCount,findings,runs:data.runs}}];"
+      }
+    },
+    {
+      "id": "15fd3b43-cb2e-4a8a-a81f-978f4e16f14e",
+      "name": "Select Unique Patches — Approval Required",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3180,
+        120
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const data = $input.first().json;\nconst config = data.config;\nconst state = $getWorkflowStaticData('global');\nconst ledger = state.patchguardV1 || {};\nconst events = [];\nlet reserved = false;\nconst seenTargets = new Set();\nconst approvalReasons = [];\nif (config.triggerSource !== 'schedule') approvalReasons.push('Manual trigger is preview-only');\nif (config.dryRun !== false) approvalReasons.push('dryRun is enabled');\nfor (const field of ['dispatchEnabled','authSetupApproved','testsApproved','serializedExecutionApproved']) if(config[field]!==true) approvalReasons.push(field+' is not approved');\nfor (const finding of data.findings) {\n  const event = {...finding,config,scanStatus:data.scanStatus,githubAlertCount:data.githubAlertCount,dispatchReady:false,event:'manual_review'};\n  if (!finding.patchEligible) { events.push({json:event}); continue; }\n  if (seenTargets.has(finding.dedupeKey)) continue;\n  seenTargets.add(finding.dedupeKey);\n  const prefix='PATCHGUARD '+finding.package+'@'+finding.fixed_version+' ';\n  const previousRun=data.runs.find(run=>run.display_title.startsWith(prefix));\n  if (Object.hasOwn(ledger,finding.dedupeKey) || previousRun) {\n    event.event='duplicate_suppressed'; event.reasons=['Patch target already reserved, attempted, or present in GitHub Actions history; reconcile manually before retrying'];\n    if (previousRun) event.runUrl=previousRun.html_url;\n  } else if (approvalReasons.length) {\n    event.event='patch_preview'; event.reasons=approvalReasons;\n  } else if (reserved) {\n    event.event='patch_deferred'; event.reasons=['One dispatch per scan; candidate remains for a later scan'];\n  } else if (Object.keys(ledger).length>=5000) {\n    event.event='manual_review'; event.reasons=['Dedupe ledger reached its safety limit; reconcile and archive manually'];\n  } else {\n    state.patchguardV1 = ledger;\n    ledger[finding.dedupeKey]={status:'reserved',at:new Date().toISOString(),advisory: finding.advisory_id,execution:String($execution.id)};\n    event.event='dispatch_reserved';event.dispatchReady=true;event.reasons=[];reserved=true;\n  }\n  events.push({json:event});\n}\nif (data.scanErrors.length || data.dispatchSafetyErrors.length) events.unshift({json:{config,event:'scan_incomplete',dispatchReady:false,scanStatus:'incomplete',reasons:[...data.scanErrors,...data.dispatchSafetyErrors],githubAlertCount:data.githubAlertCount}});\nif (!events.length) events.push({json:{config,event:'verified_no_open_npm_alerts',dispatchReady:false,scanStatus:data.scanStatus,reasons:['Dependabot returned no open npm alerts for this repository; this is not proof that the repository is vulnerability-free'],githubAlertCount:data.githubAlertCount}});\nreturn events;"
+      }
+    },
+    {
+      "id": "da162fe5-397a-4d8c-b8b6-77f19aae4e23",
+      "name": "Approved Unique Patch?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        3440,
+        120
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "pg-dispatchReady",
+              "leftValue": "={{ $json.dispatchReady }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "2045c318-511e-444d-9321-7eaa356fb931",
+      "name": "GitHub — Dispatch patchguard.yml",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        3740,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ \"https://api.github.com/repos/\" + $(\"Validate Configuration\").first().json.config.owner + \"/\" + $(\"Validate Configuration\").first().json.config.repository + \"/actions/workflows/patchguard.yml/dispatches\" }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            },
+            {
+              "name": "X-GitHub-Api-Version",
+              "value": "2026-03-10"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ {ref: $json.config.ref, inputs: {package: $json.package, fixed_version: $json.fixed_version, advisory_id: $json.advisory_id}} }}"
+      },
+      "notes": "Uses HTTP to inspect the 200/204 acceptance status and preserve ambiguous delivery without automatic retries. Do not select a credential or enable dispatch until approved.",
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "githubApi": {
+          "id": "8sZghTGcyURX3CMo",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "id": "b4d06a7c-09c5-4d17-b6a1-0a8d775728d5",
+      "name": "Record Dispatch Result — No Automatic Retry",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4000,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const response=$input.first().json;\nconst event=$('Select Unique Patches — Approval Required').all().find(i=>i.json.dispatchReady===true)?.json;\nif (!event) return [{json:{event:'dispatch_state_error',scanStatus:'incomplete',dispatchReady:false,reasons:['Missing reserved patch context; inspect execution manually']}}];\nconst accepted=!response.error && [200,204].includes(response.statusCode);\nconst state=$getWorkflowStaticData('global');\nstate.patchguardV1=state.patchguardV1 || {};\nconst old=state.patchguardV1[event.dedupeKey] || {};\nstate.patchguardV1[event.dedupeKey]={...old,status:accepted?'accepted':'uncertain_or_rejected',httpStatus:response.statusCode || null,at:new Date().toISOString()};\nreturn [{json:{...event,dispatchReady:false,event:accepted?'patch_attempt_accepted':'patch_attempt_failed_or_uncertain',reasons:[accepted?'GitHub accepted the dispatch. Build, tests, audit, and PR creation are NOT yet verified.':'Dispatch failed or has unknown delivery status. No automatic retry; reconcile Actions history and the dedupe ledger manually.'],httpStatus:response.statusCode || null,runUrl:response.body?.html_url || response.body?.workflow_run_url || null}}];"
+      }
+    },
+    {
+      "id": "0637c8dd-334d-4b8c-925e-285a7cdb3004",
+      "name": "Prepare Telegram Alert",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4300,
+        200
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "function escape(value) { return String(value??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }\nreturn $input.all().map((item,index)=>{\n  const e=item.json, config=e.config || $('Validate Configuration').first().json.config;\n  const lines=['PATCHGUARD — '+e.event,'Repository: '+config.owner+'/'+config.repository];\n  if(e.package) lines.push('Package: '+e.package+' | installed '+e.installed_version+' → '+(e.fixed_version||'no fix'));\n  if(e.advisory_id) lines.push(e.advisory_id+' '+e.cve_id+' | '+e.severity+' | KEV: '+(e.knownExploited===null?'UNKNOWN':e.knownExploited));\n  if(e.scanStatus==='incomplete') lines.push('INCOMPLETE: do not interpret this as zero vulnerabilities.');\n  for(const reason of e.reasons || []) lines.push('• '+String(reason).slice(0,300));\n  if(e.url) lines.push(e.url);\n  if(e.runUrl) lines.push(e.runUrl);\n  const message=escape(lines.join('\\n').slice(0,3500));\n  return {json:{...e,config,telegramText:message,notificationWanted:config.telegramEnabled===true && /^-?\\d{1,20}$/.test(String(config.telegramChatId || ''))},pairedItem:{item:index}};\n});"
+      }
+    },
+    {
+      "id": "da0625da-28cd-456f-8834-9526ebb68ce1",
+      "name": "Every 6 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        240
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6,
+              "triggerAtMinute": 0
+            }
+          ]
+        },
+        "misfirePolicy": "skip"
+      }
+    },
+    {
+      "id": "629aba8f-295d-4283-97e3-649bcd7cac99",
+      "name": "Telegram Notifications Enabled?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        4560,
+        200
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "pg-notificationWanted",
+              "leftValue": "={{ $json.notificationWanted }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "27f51cb7-8c6a-4211-9e56-623a143e79e7",
+      "name": "Telegram — Patch and Review Alerts",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        4820,
+        80
+      ],
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "={{ $json.config.telegramChatId }}",
+        "text": "={{ $json.telegramText }}",
+        "replyMarkup": "none",
+        "additionalFields": {
+          "appendAttribution": false,
+          "disable_web_page_preview": true,
+          "parse_mode": "HTML"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "webhookId": "280a6924-27ad-4d9c-a330-f29cacc7126a"
+    },
+    {
+      "id": "d8fdcbba-3244-4d76-bb56-6b0f5d79c680",
+      "name": "Verify Telegram Delivery",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5080,
+        80
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "return $input.all().map(item=>({json:{telegramDelivery:item.json.error?'failed':(item.json.ok===true || Number.isInteger(item.json.message_id) || Number.isInteger(item.json.result?.message_id))?'confirmed':'unconfirmed',response:item.json,notice:'Notification failure never means zero vulnerabilities. Inspect Prepare Telegram Alert for the original finding.'}}));"
+      }
+    },
+    {
+      "id": "e95d63f0-f92b-4450-9794-466a8b07a477",
+      "name": "Review Output — Telegram Disabled",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        4820,
+        360
+      ],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": []
+        },
+        "includeOtherFields": true
+      }
+    }
+  ],
+  "nodeGroups": [
+    {
+      "id": "7a134506-a1a1-48e2-9e3f-61cd9b6e1b70",
+      "name": "1 — Configuration",
+      "nodeNames": [
+        "Configuration — Repository and Safety Gates",
+        "Validate Configuration",
+        "Configuration Valid?"
+      ],
+      "description": "Set the one repository and approval flags; invalid configuration blocks all API requests."
+    },
+    {
+      "id": "18f5684f-713c-44a6-804d-ffcd0fb11365",
+      "name": "2 — Repository and CISA Intake",
+      "nodeNames": [
+        "GitHub — Open Repository Dependabot Alerts",
+        "CISA — Known Exploited Vulnerabilities",
+        "GitHub — Root package.json",
+        "GitHub — Root package-lock.json",
+        "GitHub — Existing PATCHGUARD Runs",
+        "Verify API Responses — Never Assume Zero"
+      ],
+      "description": "Read repo alerts and manifests, fresh CISA KEV, and Actions history; reject API errors and partial pages."
+    },
+    {
+      "id": "6e4ab6b0-24ec-4d0a-9e91-43d85cf9642f",
+      "name": "3 — Prioritize and Deduplicate",
+      "nodeNames": [
+        "Normalize npm — KEV Priority and Eligibility",
+        "Select Unique Patches — Approval Required",
+        "Approved Unique Patch?"
+      ],
+      "description": "Normalize npm fixes, match KEV, route manual review, suppress repeats, and require approval for one dispatch."
+    },
+    {
+      "id": "53b0d914-aeb3-48ea-9961-2b3f6ab70f90",
+      "name": "4 — Gated Patch Attempt",
+      "nodeNames": [
+        "GitHub — Dispatch patchguard.yml",
+        "Record Dispatch Result — No Automatic Retry"
+      ],
+      "description": "Dispatch patchguard.yml only after approvals; record accepted or uncertain delivery without retries."
+    },
+    {
+      "id": "265c194d-65da-4b70-b115-daf53eb5e091",
+      "name": "5 — Telegram and Review Output",
+      "nodeNames": [
+        "Prepare Telegram Alert",
+        "Telegram Notifications Enabled?",
+        "Telegram — Patch and Review Alerts",
+        "Verify Telegram Delivery",
+        "Review Output — Telegram Disabled"
+      ],
+      "description": "Show manual review, previews, attempts and API failures; optionally send escaped Telegram alerts."
+    }
+  ],
+  "activeVersion": null,
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  }
+}

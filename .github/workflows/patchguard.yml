@@ -1,0 +1,118 @@
+name: PATCHGUARD
+run-name: PATCHGUARD ${{ inputs.package }}@${{ inputs.fixed_version }} ${{ inputs.advisory_id }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: Direct npm dependency, for example lodash or @scope/package
+        required: true
+        type: string
+      fixed_version:
+        description: Exact stable same-major patched version, for example 4.17.21
+        required: true
+        type: string
+      advisory_id:
+        description: Canonical GitHub security advisory ID (GHSA-xxxx-xxxx-xxxx)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: patchguard-${{ inputs.package }}-${{ inputs.fixed_version }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  patch-and-check:
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == format('refs/heads/{0}', github.event.repository.default_branch) &&
+      vars.PATCHGUARD_TESTS_APPROVED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    env:
+      CI: 'true'
+      NEXT_TELEMETRY_DISABLED: '1'
+      PG_PACKAGE: ${{ inputs.package }}
+      PG_FIXED_VERSION: ${{ inputs.fixed_version }}
+      PG_ADVISORY_ID: ${{ inputs.advisory_id }}
+      PG_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+      NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
+      NPM_CONFIG_IGNORE_SCRIPTS: 'true'
+    steps:
+      - name: Check out the trusted dispatch commit without storing credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set up Node.js 24 without a package cache or npm token
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Validate inputs, advisory, direct dependency, and registry metadata
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          printf 'NPM_CONFIG_USERCONFIG=%s\n' "$RUNNER_TEMP/patchguard-empty.npmrc" >> "$GITHUB_ENV"
+          : > "$RUNNER_TEMP/patchguard-empty.npmrc"
+          node .github/scripts/patchguard.mjs prepare
+      - name: Resolve the patch without executing dependency lifecycle scripts
+        run: |
+          npm install --package-lock-only --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org/
+          node .github/scripts/patchguard.mjs check-lock
+      - name: Install exactly the patched lockfile without lifecycle scripts
+        run: npm ci --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org/
+      - name: Build Next.js
+        run: npm run build
+      - name: Run existing tests, strict audit, and final file policy checks
+        run: node .github/scripts/patchguard.mjs checks
+      - name: Upload only the checked package manifests
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: patchguard-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            package.json
+            package-lock.json
+          if-no-files-found: error
+          retention-days: 1
+
+  create-draft-pr:
+    needs: patch-and-check
+    if: ${{ needs.patch-and-check.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Check out trusted publisher code; never run code from the artifact
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set up Node.js 24 without a package cache or npm token
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Download this run's immutable package artifact outside the checkout
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: patchguard-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/patchguard-payload
+      - name: Revalidate manifests; create a new branch and a draft pull request
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PG_PACKAGE: ${{ inputs.package }}
+          PG_FIXED_VERSION: ${{ inputs.fixed_version }}
+          PG_ADVISORY_ID: ${{ inputs.advisory_id }}
+          PG_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          PG_PAYLOAD_DIR: ${{ runner.temp }}/patchguard-payload
+        run: node .github/scripts/patchguard.mjs publish
