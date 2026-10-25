@@ -21,6 +21,10 @@ The homepage shows repository setup, pipeline stages and the remaining setup che
 
 ## Website deployment
 
+Live website: **https://patchguard-seven.vercel.app**
+
+Launched on the existing Vercel Hobby scope `vincent-s-projects-57de271b`, project `patchguard`, using Node.js 24. No paid feature or hosting secret was added. The production homepage and `/api/health` returned HTTP 200, an unknown route returned 404, and the response headers and rendered credential privacy checks passed.
+
 The app is configured for Vercel's Next.js preset and Node.js 24. The production install uses the committed npm lockfile with lifecycle scripts disabled. No Telegram, GitHub or n8n token belongs in the hosting environment.
 
 `vercel.json` sets `git.deploymentEnabled=false`, so branch pushes and patch PRs do not automatically deploy. Website releases are explicit manual Vercel deployments. The website shows saved setup status; Telegram receives live monitoring results. The public site does not provide remote workflow controls or live scan storage.

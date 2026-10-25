@@ -9,4 +9,4 @@ __pycache__/
 *.pyc
 debug.log
 npm-debug.log*
-.vercel/
+.vercel
