@@ -19,6 +19,12 @@ The homepage shows repository setup, pipeline stages and the remaining setup che
 
 `GET /api/health` checks application availability and explicitly reports that monitoring is unverified. Baseline response headers disable framing and content sniffing. The app does not dispatch, merge or deploy anything and needs no environment secrets to start.
 
+## Website deployment
+
+The app is configured for Vercel's Next.js preset and Node.js 24. The production install uses the committed npm lockfile with lifecycle scripts disabled. No Telegram, GitHub or n8n token belongs in the hosting environment.
+
+`vercel.json` sets `git.deploymentEnabled=false`, so branch pushes and patch PRs do not automatically deploy. Website releases are explicit manual Vercel deployments. The website shows saved setup status; Telegram receives live monitoring results. The public site does not provide remote workflow controls or live scan storage.
+
 ## What remains before automatic patching
 
 1. Rotate the bot token shared in chat before production use, and update the encrypted Telegram credential in n8n. Do not store tokens in the repository or app.

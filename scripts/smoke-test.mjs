@@ -40,7 +40,7 @@ try {
   assert.equal(page.status, 200);
   const html = await page.text();
   assert.ok(html.includes('slvdrvncntjvr/patchguard'));
-  assert.ok(html.includes('Waiting for a verified scan'));
+  assert.ok(html.includes('Scan results arrive in Telegram'));
   assert.ok(!html.includes('8sZghTGcyURX3CMo'));
   assert.ok(!html.includes('CONFIGURE_TELEGRAM_CHAT_ID'));
   assert.equal(page.headers.get('x-powered-by'), null);

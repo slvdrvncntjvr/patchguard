@@ -1,0 +1,12 @@
+.git
+.next
+node_modules
+.env
+.env.*
+debug.log
+npm-debug.log*
+.github
+docs
+tests
+n8n/patchguard-v1.sdk.js
+n8n/runtime-snippets.json
